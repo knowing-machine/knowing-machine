@@ -1,4 +1,4 @@
 # Knowing Machine
 <pre>
-  pip install knowing_machine
+  pip install knowing-machine
 </pre>
