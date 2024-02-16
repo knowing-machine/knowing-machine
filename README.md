@@ -1,2 +1,4 @@
-# Package name
-Package Name
+# Knowing Machine
+<pre>
+  pip install knowing_machine
+</pre>
