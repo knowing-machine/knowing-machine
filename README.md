@@ -3,7 +3,7 @@
   pip install knowing-machine
 </pre>
 Then:
-<pre>
+```Python
   # Python
   import knowing_machine
-</pre>
+```
