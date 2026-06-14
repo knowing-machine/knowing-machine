@@ -11,23 +11,22 @@ import json
 from os import environ
 
 
-def respond(messages=None, instructions=None, **kwargs):
-    """ All parameters should be in kwargs, but they are optional
+def respond(messages, instructions, **kwargs):
     """
-    api_key = environ.get("OPENAI_API_KEY", '')
-    default_model = environ.get("OPENAI_DEFAULT_MODEL", 'gpt-5.4')
-    api_base = environ.get("OPENAI_API_BASE", "https://api.openai.com/v1")
+    """
+    api_key = environ.get("XAI_API_KEY")
+    api_base = environ.get("XAI_API_BASE", "https://api.x.ai/v1")
+    default_model = environ.get("XAI_DEFAULT_MODEL", "grok-4.20-reasoning")
 
     instruction = kwargs.get('system_instruction', instructions)
 
     # Define the payload
     payload = {
-        "model":            kwargs.get("model", default_model),
-        "instructions":     instruction,
-        "input":            messages,
+        "model": kwargs.get("model", default_model),
+        "instructions": instructions,
+        "input": messages,
         "max_output_tokens": kwargs.get("max_tokens", 64000),
         "reasoning": {
-            "effort": "xhigh",
             "summary": "detailed"
         }
     }
@@ -35,11 +34,10 @@ def respond(messages=None, instructions=None, **kwargs):
     # Convert data dictionary to JSON and encode it to bytes
     data_bytes = json.dumps(payload).encode('utf-8')
 
-    # Set the mandatory headers
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key}",
-        "User-Agent": "Name-of-the-Machine"
+        "Authorization": "Bearer " + api_key,
+        "User-Agent": "Knowing-Machine"
     }
 
     # Create the Request object
@@ -60,9 +58,10 @@ def respond(messages=None, instructions=None, **kwargs):
                 if part['type'] == 'message':
                     for chunk in part['content']:
                         text += chunk['text']
-                elif part['type'] == 'reasoning':
+                elif part['type'] == 'reasoning_content':
                     for chunk in part['summary']:
                         thoughts += chunk['text']
+
         return thoughts, text
 
     except urllib.error.HTTPError as e:
@@ -78,5 +77,5 @@ def respond(messages=None, instructions=None, **kwargs):
         return '', ''
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     ...
